@@ -9,67 +9,45 @@ class Rop extends CI_Controller {
     $this->load->helper('download');
 	$this->load->library('pagination');
 	$this->load->helper('cookie');
+	$this->load->model('rop_model');
 	$this->load->model('barang_model');
 	$this->load->model('safety_model');
   }
 	
 	public function index()
 	{
-		$data['title'] = 'Safety Stok';
-		$data['st'] = $this->safety_model->dataJoin()->result();
+		$data['title'] = 'Reorder Point';
+		$data['rop'] = $this->rop_model->dataJoin()->result();
 
 		$this->load->view('templates/header', $data);
 		$this->load->view('rop/index');
 		$this->load->view('templates/footer');
 	}
-
-	// public function laporan()
-	// {
-	// 	$data['title'] = 'Laporan Safety Stok';
-
-	// 	$this->load->view('templates/header', $data);
-	// 	$this->load->view('barangMasuk/laporan');
-	// 	$this->load->view('templates/footer');
-	// }
-
 	public function getrop()
 	{
-    	$data = $this->safety_model->dataJoin()->result();
+    	$data = $this->rop_model->data()->result();
     	echo json_encode($data);
 	}
-
-	// public function filterBarangMasuk($tglawal, $tglakhir)
-	// {
-    //   	$data = $this->safety_model->lapdata($tglawal, $tglakhir)->result();
-    // 	echo json_encode($data);
-	// }
-
 
 	public function getBarang()
 	{
 		$id = $this->input->post('id');
     	$where = array('id_barang' => $id );
-    	$data = $this->barang_model->detail_data($where, 'barang')->result();
+    	$data = $this->rop_model->detail_data($where, 'view_rop')->result();
     	echo json_encode($data);
 	}
 
-	// public function getTotalStok()
-	// {
-	// 	$id = $this->input->post('id');
-	// 	$where = array('id_barang'=>$id);
-    // 	$data = $this->db->select_sum('jumlah_masuk')->from('safety_stok')->where($where)->get();
-    //     $data2 = $this->db->select_sum('jumlah_keluar')->from('barang_keluar')->where($where)->get();
-	// 	$bm = $data->row();
-	// 	$bk = $data2->row();
-	// 	$hasil = intval($bm->jumlah_masuk) - intval($bk->jumlah_keluar);
-	// 	$total = array('total'=>$hasil);
-	// 	echo json_encode($total);
-	// }
-
-	public function proses_hapus($id,$jml,$idb)
+	public function getLeadTime()
 	{
-		$where = array('id_safety'=>$id);
-		$this->safety_model->hapus_data($where, 'safety_stok');
+		$lt = $this->input->post('shari');
+		$data = $this->rop_model->getLeadTime($lt);
+		$this->output->st_content_type('application/json')->set_output(json_encode($data));
+	}
+
+	public function proses_hapus($id)
+	{
+		$where = array('id_rop'=>$id);
+		$this->safety_model->hapus_data($where, 'view_rop');
 
 
 		$this->session->set_flashdata('Pesan','
@@ -88,16 +66,8 @@ class Rop extends CI_Controller {
 
 	public function tambah()
 	{
-        $data['title'] = 'Safety Stok';
-
-        // $data['kode'] = $this->safety_model->buat_kode();
-        
-		$data['barang'] = $this->barang_model->data()->result();
-        $data['jmlbarang'] = $this->barang_model->data()->num_rows();
-        
-        // $data['supplier'] = $this->supplier_model->data()->result();
-        // $data['jmlsupplier'] = $this->supplier_model->data()->num_rows();
-        
+        $data['title'] = 'Reorder Point';   
+		$data['barang'] = $this->rop_model->dataJoin()->result();
 		$data['tglnow'] = date('m/d/Y');
 
 		$this->load->view('templates/header', $data);
@@ -107,12 +77,9 @@ class Rop extends CI_Controller {
 
 	public function ubah($id)
 	{
-		$data['title'] = 'Safety Stok';
-		$data['supplier'] = $this->supplier_model->data()->result();
-		$data['jmlsupplier'] = $this->supplier_model->data()->num_rows();
-
+		$data['title'] = 'Reorder Point';
 		//menampilkan data berdasarkan id
-		$data['data'] = $this->safety_model->detailJoin($id)->result();
+		$data['data'] = $this->rop_model->detailJoin($id)->result();
 
 
 		$this->load->view('templates/header', $data);
@@ -122,31 +89,37 @@ class Rop extends CI_Controller {
 
 	public function proses_tambah()
 	{
-        $id 	= $this->input->post('id');
+		$id_rop =$this->input->post('id_rop');
+        $id_safety 	= $this->input->post('id_safety');
         $tgl 	= $this->input->post('tgl');
 		$barang = $this->input->post('barang');
-		$pmax 	= $this->input->post('pmax');
-		$pmin 	= $this->input->post('pmin');
+		$barang = $this->rop_model->get();
+		$pmr 	= $this->input->post('pmr');
+		$ltd 	= $this->input->post('ltd');
 		$lt 	= $this->input->post('shari');
         $st 	= $this->input->post('sstok');
+		$rop		=$this->input->post('rop');
 
 		$explode = explode("/", $tgl);
-      	$tglsafety = $explode[2].'-'.$explode[0].'-'.$explode[1];
+      	$tglrop = $explode[2].'-'.$explode[0].'-'.$explode[1];
 
 		
 		$data=array(
-			'id_safety'=>$id,
-			'tgl_safety'=>$tglsafety,
+			'id_rop' =>$id_rop,
+			'id_safety'=>$id_safety,
 			'id_barang'=> $barang,
-			'pemakaian_maximal'=>$pmax,
-			'pemakaian_minimal'=>$pmin,
+			'pemakaian_rata'=>$pmr,
+			'lead_time_demand'=>$ltd,
 			'lead_time'=>$lt,
 			'safety_stok'=>$st,
+			'rop'=>$rop,
+			'tgl_rop'=>$tglrop,
+
 		);
 
 		$where = array('id_barang' => $barang);
 
-		$this->safety_model->tambah_data($data, 'safety_stok');
+		$this->rop_model->tambah_data($data, 'rop');
 		$this->session->set_flashdata('Pesan','
 		<script>
 		$(document).ready(function() {

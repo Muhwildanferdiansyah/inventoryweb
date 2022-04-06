@@ -1,18 +1,18 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <form action="<?= base_url() ?>safetystok/proses_tambah" name="myForm" method="POST" enctype="multipart/form-data"
+    <form action="<?= base_url() ?>rop/proses_tambah" name="myForm" method="POST" enctype="multipart/form-data"
         onsubmit="return validateForm()">
 
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <div class="d-sm-flex">
-                <a href="<?= base_url() ?>safetystok" class="btn btn-md btn-circle btn-secondary">
+                <a href="<?= base_url() ?>rop" class="btn btn-md btn-circle btn-secondary">
                     <i class="fas fa-arrow-left"></i>
                 </a>
                 &nbsp;
-                <h1 class="h2 mb-0 text-gray-800">Tambah Safety Stok</h1>
+                <h1 class="h2 mb-0 text-gray-800">Tambah Reorder Point</h1>
             </div>
 
             <button type="submit" class="btn btn-primary btn-md btn-icon-split">
@@ -29,7 +29,7 @@
                 <!-- form -->
                 <div class="card border-bottom-secondary shadow mb-4">
                     <div class="card-header py-3 bg-secondary">
-                        <h6 class="m-0 font-weight-bold text-white">Form Safety Stok</h6>
+                        <h6 class="m-0 font-weight-bold text-white">Form Reorder Point</h6>
                     </div>
                     <div class="card-body">
                         <div class="col-lg-12">
@@ -41,7 +41,6 @@
                             </div>
 
                             <!-- opsi barang -->
-                            <?php if($jmlbarang > 0): ?>
                             <div class="form-group"><label>Barang</label>
                                 <select name="barang" class="form-control chosen" onchange="ambilBarang()">
                                     <option value="">--Pilih--</option>
@@ -50,45 +49,32 @@
                                     <?php endforeach ?>
                                 </select>
                             </div>
-                            <?php else: ?>
-                            <div class="form-group"><label>Barang</label>
-                                <input type="hidden" name="barang">
-                                <div class="d-sm-flex justify-content-between">
-                                    <span class="text-danger"><i>(Belum Ada Data Barang!)</i></span>
-                                    <a href="<?= base_url() ?>barang" class="btn btn-sm btn-primary btn-icon-split">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-plus"></i>
-                                        </span>
-                                    </a>
-                                </div>
+
+                            <!-- Lead Time -->
+                            <div class="form-group "><label>Lead Time(Satuan Hari)</label>
+                                <input class="form-control lt" name="shari" readonly type="text" placeholder="">
                             </div>
-                            <?php endif; ?>
+
 
                             <!-- Pemakaian Maxiamal -->
-                            <div class="form-group"><label>Pemakaian Maximal</label>
-                                <input class="form-control pmax" name="pmax" onkeyup="safety()" type="text"
+                            <div class="form-group"><label>Pemakaian rata-rata</label>
+                                <input class="form-control pmax" name="pmr" onkeyup="ambilBarang()" type="text"
                                     placeholder="">
                             </div>
 
                             <!-- pemakaian Minimal -->
-                            <div class="form-group"><label>Pemakaian Minimal</label>
-                                <input class="form-control pmin" name="pmin" onkeyup="safety()" type="text"
-                                    placeholder="">
-                            </div>
-
-                            <!-- Lead Time -->
-                            <div class="form-group "><label>Lead Time(Satuan Hari)</label>
-                                <input class="form-control lt" name="shari" onkeyup="safety()" type="text"
-                                    placeholder="">
+                            <div class="form-group"><label>lead Time Demand (Lead Time * Pemakaian rata-rata)</label>
+                                <input class="form-control pmin" name="ltd" readonly type="text" placeholder="">
                             </div>
 
                             <!-- Safety Stok -->
                             <div class="form-group"><label>Safety Stok</label>
-                                <!-- <input readonly=""> -->
-                                <!-- <input class="form-control" name="sstok" type="number" placeholder=""> -->
-
                                 <input class="form-control sstok" name="sstok" type="number" readonly placeholder="">
 
+                            </div>
+
+                            <div class="form-group"><label>Reorder Point (Lead Time Demand + Safety Stok)</label>
+                                <input class="form-control rop" name="rop" readonly type="text" placeholder="">
                             </div>
 
                         </div>
@@ -100,40 +86,7 @@
 
             </div>
 
-            <div class=" col-lg-4 mb-4">
-                <!-- file -->
-                <div class="card border-bottom-secondary shadow mb-4">
-                    <div class="card-header py-3 bg-secondary">
-                        <h6 class="m-0 font-weight-bold text-white">Preview</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="col-lg-12">
 
-                            <center>
-                                <img id="preview" width="200px" src="<?= base_url() ?>assets/upload/barang/box.png"
-                                    alt="">
-                            </center>
-
-                            <br>
-
-                            <label><b>Nama Barang</b></label>
-                            <br>
-                            <h6 class="h6 text-gray-800" id="judul">-</h6>
-                            <!-- Divider -->
-                            <hr class="sidebar-divider">
-
-                            <label><b>Stok Barang</b></label>
-                            <br>
-                            <h6 class="h6 text-gray-800" id="stok">-</h6>
-                            <!-- Divider -->
-                            <hr class="sidebar-divider">
-
-
-                        </div>
-                    </div>
-                </div>
-
-            </div>
         </div>
 
 
@@ -146,8 +99,7 @@
 <!-- End of Main Content -->
 
 <script src="<?= base_url(); ?>assets/js/jquery.min.js"></script>
-<script src="<?= base_url(); ?>assets/js/barangMasuk.js"></script>
-<script src="<?= base_url(); ?>assets/js/safetystok.js"></script>
+<script src="<?= base_url(); ?>assets/js/rop.js"></script>
 <script src="<?= base_url(); ?>assets/js/validasi/formbarangmasuk.js"></script>
 <script src="<?= base_url(); ?>assets/plugin/datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <script src="<?= base_url(); ?>assets/plugin/chosen/chosen.jquery.min.js"></script>

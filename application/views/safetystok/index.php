@@ -62,7 +62,7 @@ function tgl_indo($tanggal){
                             <tr>
                                 <td><?= $no++ ?>.</td>
                                 <td><?= tgl_indo($st->tgl_safety) ?></td>
-                                <td><?= $st->id_barang ?></td>
+                                <td><?= $st->nama_barang ?></td>
                                 <td><?= $st->pemakaian_maximal ?></td>
                                 <td><?= $st->pemakaian_minimal ?></td>
                                 <td><?= $st->lead_time ?></td>

@@ -61,13 +61,13 @@ function tgl_indo($tanggal){
                             <tr>
                                 <td><?= $no++ ?>.</td>
                                 <td><?= tgl_indo($r->tgl_rop) ?></td>
-                                <td><?= $r->id_barang ?></td>
+                                <td><?= $r->nama_barang ?></td>
                                 <td><?= $r->pemakaian_rata ?></td>
                                 <td><?= $r->safety_stok ?></td>
                                 <td><?= $r->rop ?></td>
                                 <td>
                                     <center>
-                                        <a href="<?= base_url() ?>safetystok/ubah/<?= $r->id_rop ?>"
+                                        <a href="<?= base_url() ?>rop/ubah/<?= $r->id_rop ?>"
                                             class="btn btn-circle btn-success btn-sm">
                                             <i class="fas fa-pen"></i>
                                         </a>
