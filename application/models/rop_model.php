@@ -13,8 +13,6 @@ class rop_model extends ci_model{
       $this->db->select('*');
       $this->db->from('view_rop as r');
       $this->db->join('barang as b', 'b.id_barang = r.id_barang');
-      // $this->db->join('supplier as s', 's.id_supplier = st.id_supplier');
-
       $this->db->order_by('r.id_rop','DESC');
       return $query = $this->db->get();
     }

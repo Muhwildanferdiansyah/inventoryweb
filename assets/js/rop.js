@@ -4,8 +4,8 @@ function ambilBarang() {
     var barang = $('[name="barang"]').val();
 
     if (barang == '') {
-        $('#shari').val(0);
-        $('#sstok').val(0);
+        $('input[name="shari"]').val(0);
+        $('input[name="sstok"]').val(0);
     } else {
         $.ajax({
             type: 'POST',
@@ -13,10 +13,10 @@ function ambilBarang() {
             url: base_url,
             dataType: 'json',
             success: function(hasil) {
-                $('#shari').val(hasil[0].lead_time);
-                $('#sstok').val(hasil[0].safety_stok);
-                getLeadTime(hasil[0].shari, hasil[0].id_barang);
+                // $('#shari').val(hasil[0].lead_time);
+                // $('#sstok').val(hasil[0].safety_stok);
                 // getLeadTime(hasil[0].shari, hasil[0].id_barang);
+                
 
             }
         });
