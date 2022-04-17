@@ -29,14 +29,7 @@ function tgl_indo($tanggal)
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Pemesanan</h1>
-        <a href="<?= base_url() ?>pemesanan/tambah" class="btn btn-sm btn-primary btn-icon-split">
-            <span class="text text-white">Tambah Data</span>
-            <span class="icon text-white-50">
-                <i class="fas fa-plus"></i>
-            </span>
-        </a>
-
+        <h1 class="h3 mb-0 text-gray-800">Transaksi EOQ</h1>
     </div>
 
     <div class="col-lg-12 mb-4" id="container">
@@ -49,37 +42,33 @@ function tgl_indo($tanggal)
                         <thead>
                             <tr>
                                 <th width="1%">No</th>
-                                <th>Tanggal Pemesanan</th>
                                 <th>Barang</th>
                                 <th>Kebutuhan Barang</th>
                                 <th>Biaya Pemesanan</th>
                                 <th>Biaya Penyimpanan</th>
-                                <th>Biaya Pemeliharaan</th>
-                                <th width="1%">Aksi</th>
+                                <th>Safety Stock</th>
+                                <th>Reorder Point</th>
+                                <th>EOQ</th>
+                                <th>Frekuensi Pemesanan</th>
+                                <th>Biaya Optimal</th>
                             </tr>
                         </thead>
                         <tbody id="tbody">
                             <?php $no = 1;
-                            foreach ($pemesanan as $p) : ?>
+                            foreach ($eoq as $e) : ?>
                                 <tr>
                                     <td><?= $no++ ?>.</td>
-                                    <td><?= tgl_indo($p->tgl_pesan) ?></td>
-                                    <td><?= $p->nama_barang ?></td>
-                                    <td><?= $p->jumlah ?></td>
-                                    <td><?= $p->biaya_pemesanan ?></td>
-                                    <td><?= $p->biaya_penyimpanan ?></td>
-                                    <td><?= $p->biaya_pemeliharaan ?></td>
-                                    <td>
-                                        <center>
-                                            <a href="#" data-toggle="modal" data-target="#formU" onclick="ambilData('<?= $p->id_pemesanan ?>')" class="btn btn-circle btn-success btn-sm">
-                                                <i class="fas fa-pen"></i>
-                                            </a>
-                                            <a href="#" onclick="konfirmasi('<?= $p->id_pemesanan ?>')" class="btn btn-circle btn-danger btn-sm">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                        </center>
-                                    </td>
+                                    <td><?= $e->id_barang ?></td>
+                                    <td><?= $e->jumlah ?></td>
+                                    <td><?= $e->biaya_pemesanan ?></td>
+                                    <td><?= $e->biaya_penyimpanan ?></td>
+                                    <td><?= $e->safety_stok ?></td>
+                                    <td><?= $e->rop ?></td>
+                                    <td><?= $e->eoq                 =  round(sqrt(2 * $e->jumlah * $e->biaya_pemesanan / $e->biaya_penyimpanan)); ?></td>
+                                    <td><?= $e->frekuensi_pemesanan = round($e->jumlah / $e->eoq); ?></td>
+                                    <td><?= $e->biaya_optimal       = round($e->eoq * $e->biaya_penyimpanan / 2 + $e->frekuensi_pemesanan * $e->biaya_pemesanan / $e->eoq); ?></td>
                                 </tr>
+
                             <?php endforeach; ?>
                         </tbody>
                     </table>
@@ -96,7 +85,7 @@ function tgl_indo($tanggal)
 <!-- End of Main Content -->
 
 <script src="<?= base_url(); ?>assets/js/jquery.min.js"></script>
-<script src="<?= base_url(); ?>assets/js/pemesanan.js"></script>
+<script src="<?= base_url(); ?>assets/js/barangMasuk.js"></script>
 
 <?php if ($this->session->flashdata('Pesan')) : ?>
     <?= $this->session->flashdata('Pesan') ?>

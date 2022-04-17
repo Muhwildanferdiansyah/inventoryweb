@@ -10,14 +10,14 @@ class Rop extends CI_Controller {
 	$this->load->library('pagination');
 	$this->load->helper('cookie');
 	$this->load->model('rop_model');
-	$this->load->model('barang_model');
+	// $this->load->model('barang_model');
 	$this->load->model('safety_model');
   }
 	
 	public function index()
 	{
 		$data['title'] = 'Reorder Point';
-		$data['rop'] = $this->rop_model->dataJoin()->result();
+		$data['rop'] = $this->rop_model->data()->result();
 
 		$this->load->view('templates/header', $data);
 		$this->load->view('rop/index');
@@ -29,13 +29,13 @@ class Rop extends CI_Controller {
     	echo json_encode($data);
 	}
 
-	public function getBarang()
-	{
-		$id = $this->input->post('id');
-    	$where = array('id_barang' => $id );
-    	$data = $this->rop_model->detail_data($where, 'view_rop')->result();
-    	echo json_encode($data);
-	}
+	// public function getBarang()
+	// {
+	// 	$id = $this->input->post('id');
+    // 	$where = array('id_barang' => $id );
+    // 	$data = $this->safety_model->detail_data($where, 'safety_stok')->result();
+    // 	echo json_encode($data);
+	// }
 
 	public function getLeadTime()
 	{
@@ -47,7 +47,7 @@ class Rop extends CI_Controller {
 	public function proses_hapus($id)
 	{
 		$where = array('id_rop'=>$id);
-		$this->safety_model->hapus_data($where, 'view_rop');
+		$this->safety_model->hapus_data($where, 'rop');
 
 
 		$this->session->set_flashdata('Pesan','
@@ -67,7 +67,9 @@ class Rop extends CI_Controller {
 	public function tambah()
 	{
         $data['title'] = 'Reorder Point';   
-		$data['barang'] = $this->rop_model->dataJoin()->result();
+		$data['barang'] = $this->safety_model->dataJoin()->result();
+		// $data['lead_time'] = $this->safety_model->data()->result();
+		// $data['safety_stok'] = $this->safety_model->data()->result();
 		$data['tglnow'] = date('m/d/Y');
 
 		$this->load->view('templates/header', $data);
@@ -89,15 +91,14 @@ class Rop extends CI_Controller {
 
 	public function proses_tambah()
 	{
-		$id_rop =$this->input->post('id_rop');
+		$id_rop 	=$this->input->post('id_rop');
         $id_safety 	= $this->input->post('id_safety');
-        $tgl 	= $this->input->post('tgl');
-		$barang = $this->input->post('barang');
-		$barang = $this->rop_model->get();
-		$pmr 	= $this->input->post('pmr');
-		$ltd 	= $this->input->post('ltd');
-		$lt 	= $this->input->post('shari');
-        $st 	= $this->input->post('sstok');
+        $tgl 		= $this->input->post('tgl');
+		$barang 	= $this->input->post('barang');
+		$pmr 		= $this->input->post('pmr');
+		$ltd 		= $this->input->post('ltd');
+		$lt 		= $this->input->post('shari');
+        $st 		= $this->input->post('sstok');
 		$rop		=$this->input->post('rop');
 
 		$explode = explode("/", $tgl);
@@ -117,7 +118,7 @@ class Rop extends CI_Controller {
 
 		);
 
-		$where = array('id_barang' => $barang);
+		// $where = array('id_barang' => $barang);
 
 		$this->rop_model->tambah_data($data, 'rop');
 		$this->session->set_flashdata('Pesan','

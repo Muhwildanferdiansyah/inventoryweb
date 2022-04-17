@@ -23,6 +23,7 @@ $route['barang_keluar'] = 'barangKeluar/index';
 $route['pemesanan'] = 'Pemesanan/index';
 $route['safetystok'] = 'Safetystok/index';
 $route['rop'] = 'Rop/index';
+$route['eoq'] = 'Eoq/index';
 
 
 

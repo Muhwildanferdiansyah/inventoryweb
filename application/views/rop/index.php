@@ -1,26 +1,27 @@
 <?php
-function tgl_indo($tanggal){
-	$bulan = array (
-		1 =>   'Januari',
-		'Februari',
-		'Maret',
-		'April',
-		'Mei',
-		'Juni',
-		'Juli',
-		'Agustus',
-		'September',
-		'Oktober',
-		'November',
-		'Desember'
-	);
-	$pecahkan = explode('-', $tanggal);
+function tgl_indo($tanggal)
+{
+    $bulan = array(
+        1 =>   'Januari',
+        'Februari',
+        'Maret',
+        'April',
+        'Mei',
+        'Juni',
+        'Juli',
+        'Agustus',
+        'September',
+        'Oktober',
+        'November',
+        'Desember'
+    );
+    $pecahkan = explode('-', $tanggal);
 
-	// variabel pecahkan 1 = tanggal
-	// variabel pecahkan 0 = bulan
-	// variabel pecahkan 2 = tahun
+    // variabel pecahkan 1 = tanggal
+    // variabel pecahkan 0 = bulan
+    // variabel pecahkan 2 = tahun
 
-	return $pecahkan[2] . ' ' . $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0];
+    return $pecahkan[2] . ' ' . $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0];
 }
 ?>
 <!-- Begin Page Content -->
@@ -57,27 +58,26 @@ function tgl_indo($tanggal){
                             </tr>
                         </thead>
                         <tbody id="tbody">
-                            <?php $no=1; foreach ($rop as $r): ?>
-                            <tr>
-                                <td><?= $no++ ?>.</td>
-                                <td><?= tgl_indo($r->tgl_rop) ?></td>
-                                <td><?= $r->nama_barang ?></td>
-                                <td><?= $r->pemakaian_rata ?></td>
-                                <td><?= $r->safety_stok ?></td>
-                                <td><?= $r->rop ?></td>
-                                <td>
-                                    <center>
-                                        <a href="<?= base_url() ?>rop/ubah/<?= $r->id_rop ?>"
-                                            class="btn btn-circle btn-success btn-sm">
-                                            <i class="fas fa-pen"></i>
-                                        </a>
-                                        <a href="#" onclick="konfirmasi('<?= $r->id_rop ?>')"
-                                            class="btn btn-circle btn-danger btn-sm">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </center>
-                                </td>
-                            </tr>
+                            <?php $no = 1;
+                            foreach ($rop as $r) : ?>
+                                <tr>
+                                    <td><?= $no++ ?>.</td>
+                                    <td><?= tgl_indo($r->tgl_rop) ?></td>
+                                    <td><?= $r->id_barang ?></td>
+                                    <td><?= $r->pemakaian_rata ?></td>
+                                    <td><?= $r->safety_stok ?></td>
+                                    <td><?= $r->rop ?></td>
+                                    <td>
+                                        <center>
+                                            <a href="<?= base_url() ?>rop/ubah/<?= $r->id_rop ?>" class="btn btn-circle btn-success btn-sm">
+                                                <i class="fas fa-pen"></i>
+                                            </a>
+                                            <a href="#" onclick="konfirmasi('<?= $r->id_rop ?>')" class="btn btn-circle btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </center>
+                                    </td>
+                                </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
@@ -96,24 +96,24 @@ function tgl_indo($tanggal){
 <script src="<?= base_url(); ?>assets/js/jquery.min.js"></script>
 <script src="<?= base_url(); ?>assets/js/barangMasuk.js"></script>
 
-<?php if($this->session->flashdata('Pesan')): ?>
-<?= $this->session->flashdata('Pesan') ?>
-<?php else: ?>
-<script>
-$(document).ready(function() {
-    let timerInterval
-    Swal.fire({
-        title: 'Memuat...',
-        timer: 1000,
-        onBeforeOpen: () => {
-            Swal.showLoading()
-        },
-        onClose: () => {
-            clearInterval(timerInterval)
-        }
-    }).then((result) => {
+<?php if ($this->session->flashdata('Pesan')) : ?>
+    <?= $this->session->flashdata('Pesan') ?>
+<?php else : ?>
+    <script>
+        $(document).ready(function() {
+            let timerInterval
+            Swal.fire({
+                title: 'Memuat...',
+                timer: 1000,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                },
+                onClose: () => {
+                    clearInterval(timerInterval)
+                }
+            }).then((result) => {
 
-    })
-});
-</script>
+            })
+        });
+    </script>
 <?php endif; ?>

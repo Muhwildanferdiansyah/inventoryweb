@@ -42,3 +42,28 @@ function getLeadTime(shari, id) {
     });
 
 }
+
+// hitung
+
+function kali(){
+    var nilai1  = $('input[name="shari"]').val();
+    var nilai2  = $('input[name="pmr"]').val();
+    var nilai3   = $('input[name="ltd"]').val();
+    var nilai4   = $('input[name="sstok"]').val();
+
+    var hasil = parseFloat(nilai1) * parseFloat(nilai2);
+    if(!isNaN(hasil)){
+        $('input[name="ltd"]').val(hasil);
+    } else {
+        $('input[name="ltd"]').val(0);
+    }
+
+    var hasil1 = parseFloat(nilai3) + parseFloat(nilai4);
+    if(!isNaN(hasil1)){
+        $('input[name="rop"]').val(hasil1);
+    } else {
+        $('input[name="rop"]').val(0);
+    }
+
+
+}

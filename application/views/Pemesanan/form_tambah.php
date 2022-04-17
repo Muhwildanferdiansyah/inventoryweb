@@ -1,8 +1,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <form action="<?= base_url() ?>pemesanan/proses_tambah" name="myForm" method="POST" enctype="multipart/form-data"
-        onsubmit="return validateForm()">
+    <form action="<?= base_url() ?>pemesanan/proses_tambah" name="myForm" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
 
 
         <!-- Page Heading -->
@@ -38,36 +37,35 @@
 
                             <!-- Tgl Masuk -->
                             <div class="form-group"><label>Tanggal Masuk</label>
-                                <input class="form-control" name="tgl" id="datepicker" value="<?= $tglnow ?>"
-                                    type="text" placeholder="" autocomplete="off">
+                                <input class="form-control" name="tgl" id="datepicker" value="<?= $tglnow ?>" type="text" placeholder="" autocomplete="off">
                             </div>
 
                             <!-- opsi barang -->
-                            <?php if($jmlbarang > 0): ?>
-                            <div class="form-group"><label>Barang</label>
-                                <select name="barang" class="form-control chosen" onchange="ambilBarang()">
-                                    <option value="">--Pilih--</option>
-                                    <?php foreach($barang as $b): ?>
-                                    <option value="<?= $b->id_barang ?>"><?= $b->nama_barang ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                            </div>
-                            <?php else: ?>
-                            <div class="form-group"><label>Barang</label>
-                                <input type="hidden" name="barang">
-                                <div class="d-sm-flex justify-content-between">
-                                    <span class="text-danger"><i>(Belum Ada Data Barang!)</i></span>
-                                    <a href="<?= base_url() ?>barang" class="btn btn-sm btn-primary btn-icon-split">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-plus"></i>
-                                        </span>
-                                    </a>
+                            <?php if ($jmlbarang > 0) : ?>
+                                <div class="form-group"><label>Barang</label>
+                                    <select name="barang" class="form-control chosen" onchange="ambilBarang()">
+                                        <option value="">--Pilih--</option>
+                                        <?php foreach ($barang as $b) : ?>
+                                            <option value="<?= $b->id_barang ?>"><?= $b->nama_barang ?></option>
+                                        <?php endforeach ?>
+                                    </select>
                                 </div>
-                            </div>
+                            <?php else : ?>
+                                <div class="form-group"><label>Barang</label>
+                                    <input type="hidden" name="barang">
+                                    <div class="d-sm-flex justify-content-between">
+                                        <span class="text-danger"><i>(Belum Ada Data Barang!)</i></span>
+                                        <a href="<?= base_url() ?>barang" class="btn btn-sm btn-primary btn-icon-split">
+                                            <span class="icon text-white">
+                                                <i class="fas fa-plus"></i>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
                             <?php endif; ?>
 
                             <!-- Jumlah Barang -->
-                            <div class="form-group"><label>Qty</label>
+                            <div class="form-group"><label>Kebutuhan Barang</label>
                                 <input class="form-control" name="jumlah" type="number" placeholder="">
                             </div>
 
@@ -105,8 +103,7 @@
                         <div class="col-lg-12">
 
                             <center>
-                                <img id="preview" width="200px" src="<?= base_url() ?>assets/upload/barang/box.png"
-                                    alt="">
+                                <img id="preview" width="200px" src="<?= base_url() ?>assets/upload/barang/box.png" alt="">
                             </center>
 
                             <br>
@@ -148,35 +145,35 @@
 
 
 <script>
-$('.chosen').chosen({
-    width: '100%',
+    $('.chosen').chosen({
+        width: '100%',
 
-});
+    });
 
-$('#datepicker').datepicker({
-    autoclose: true
-});
+    $('#datepicker').datepicker({
+        autoclose: true
+    });
 </script>
 
-<?php if($this->session->flashdata('Pesan')): ?>
+<?php if ($this->session->flashdata('Pesan')) : ?>
 
-<?php else: ?>
-<script>
-$(document).ready(function() {
+<?php else : ?>
+    <script>
+        $(document).ready(function() {
 
-    let timerInterval
-    Swal.fire({
-        title: 'Memuat...',
-        timer: 1000,
-        onBeforeOpen: () => {
-            Swal.showLoading()
-        },
-        onClose: () => {
-            clearInterval(timerInterval)
-        }
-    }).then((result) => {
+            let timerInterval
+            Swal.fire({
+                title: 'Memuat...',
+                timer: 1000,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                },
+                onClose: () => {
+                    clearInterval(timerInterval)
+                }
+            }).then((result) => {
 
-    })
-});
-</script>
+            })
+        });
+    </script>
 <?php endif; ?>

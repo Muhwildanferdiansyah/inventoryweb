@@ -193,14 +193,14 @@ if (!$this->session->has_userdata('login_session')) {
                 </a>
             </li>
 
-            <?php if($title == 'Transaksieoq'): ?>
+            <?php if($title == 'eoq'): ?>
             <li class="nav-item active">
                 <?php else: ?>
             <li class="nav-item">
                 <?php endif; ?>
-                <a class="nav-link" href="<?= base_url() ?>transaksieoq">
+                <a class="nav-link" href="<?= base_url() ?>eoq">
                     <i class="fas fa-fw fa-users"></i>
-                    <span>Transaksi EOQ</span>
+                    <span>Economic Order Quantity</span>
                 </a>
             </li>
 

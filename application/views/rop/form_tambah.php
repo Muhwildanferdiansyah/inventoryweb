@@ -42,36 +42,37 @@
 
                             <!-- opsi barang -->
                             <div class="form-group"><label>Barang</label>
-                                <select name="barang" class="form-control chosen">
+                                <select name="barang" id="barang" class="form-control chosen" onchange="coba()">
                                     <option value="">--Pilih--</option>
                                     <?php foreach($barang as $b): ?>
                                     <option value="<?= $b->id_barang ?>"><?= $b->nama_barang ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
-
+                            <!-- //harusnya readonly -->
                             <!-- Lead Time -->
                             <div class="form-group "><label>Lead Time(Satuan Hari)</label>
-                                <input class="form-control lt" name="shari" id="shari" readonly type="text"
+                                <input class="form-control lt" name="shari" id="shari" onkeyup="kali()" type="text"
                                     placeholder="">
+
                             </div>
 
 
                             <!-- Pemakaian Maxiamal -->
                             <div class="form-group"><label>Pemakaian rata-rata</label>
-                                <input class="form-control pmax" name="pmr" id="pmr" onkeyup="ambilBarang()" type="text"
+                                <input class="form-control pmax" name="pmr" id="pmr" onkeyup="kali()" type="text"
                                     placeholder="">
                             </div>
 
                             <!-- pemakaian Minimal -->
                             <div class="form-group"><label>lead Time Demand (Lead Time * Pemakaian rata-rata)</label>
-                                <input class="form-control pmin" name="ltd" id="ltd" readonly type="text"
-                                    placeholder="">
+                                <input class="form-control pmin" name="ltd" id="ltd" onkeyup="kali()" readonly
+                                    type="text" placeholder="">
                             </div>
-
+                            <!-- //harusnya readonly -->
                             <!-- Safety Stok -->
                             <div class="form-group"><label>Safety Stok</label>
-                                <input class="form-control sstok" name="sstok" id="sstok" type="number" readonly
+                                <input class="form-control sstok" name="sstok" id="sstok" onkeyup="kali()" type="text"
                                     placeholder="">
 
                             </div>
@@ -102,26 +103,28 @@
 <!-- End of Main Content -->
 
 <script src="<?= base_url(); ?>assets/js/jquery.min.js"></script>
-<script src="<?= base_url(); ?>assets/js/rop1.js"></script>
+<script src="<?= base_url(); ?>assets/js/rop.js"></script>
 <script src="<?= base_url(); ?>assets/js/validasi/formbarangmasuk.js"></script>
 <script src="<?= base_url(); ?>assets/plugin/datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <script src="<?= base_url(); ?>assets/plugin/chosen/chosen.jquery.min.js"></script>
 
-<script>
-$('#barang').on('change', (event) => {
-    ambilbarang(event.target.value).then(barang => {
-        $('#shari').val(barang.shari);
-        $('#sstok').val(barang.sstok);
-    });
-});
-async function ambilBarang(id) {
-    let response = await fetch('rop/getBarang' + id)
-    let data = await response.json();
-    return $data;
 
+<script>
+function coba() {
+    var barang = $("#barang").val();
+    var base_url = link + 'rop/getBarang';
+    var barang = $('[name="barang"]').val();
+    $.ajax({
+        url: base_url,
+        data: 'id=' + id_safety,
+    }).success(function(data) {
+        var json = data,
+            obj = JSON.parse(json);
+        $('#shari').val(obj.shari);
+        $('#sstok').val(obj.sstok);
+    })
 }
 </script>
-
 
 
 
